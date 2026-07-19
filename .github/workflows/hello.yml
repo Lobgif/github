@@ -18,6 +18,6 @@ jobs:
           echo "Branche: \${{ github.ref_name }}"
           echo "Auteur du commit: \${{ github.actor }}"
       - name: Secrets
-        run: echo "Secrets:" ${{ secrets.SECRET }}
+        run: echo "$DOCKER_TOKEN"
         env:
-          SECRET: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
