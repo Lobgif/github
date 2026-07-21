@@ -1,9 +1,12 @@
 {
   "name": "github-actions-demo",
   "version": "1.0.0",
+  "description": "Projet de démonstration GitHub Actions",
   "main": "index.js",
   "scripts": {
     "test": "node index.js",
-    "build": "echo \"Build réussi\""
-  }
+    "build": "mkdir -p dist && cp index.js dist/index.js"
+  },
+  "author": "",
+  "license": "MIT"
 }
