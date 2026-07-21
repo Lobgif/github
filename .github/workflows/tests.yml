@@ -1,0 +1,43 @@
+name: CI
+run-name: Tests pour ${{ github.ref_name }}
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Où déployer ?'
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      # Actions épinglées par SHA (voir encart ci-dessous)
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: npm ci
+      - run: npm test
+
+  build:
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - run: npm ci
+      - run: npm run build
