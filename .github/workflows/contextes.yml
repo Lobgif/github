@@ -1,0 +1,27 @@
+# Afficher des infos sur le contexte
+- name: Debug
+  run: |
+    echo "Branche: ${{ github.ref_name }}"
+    echo "Auteur: ${{ github.actor }}"
+    echo "SHA: ${{ github.sha }}"
+
+# Utiliser un secret
+- name: Login Docker
+  run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u user --password-stdin
+
+# Condition basée sur le contexte
+- name: Deploy (main only)
+  if: github.ref_name == 'main'
+  run: ./deploy.sh
+
+# Utiliser une variable d'environnement
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
